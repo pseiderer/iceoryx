@@ -16,10 +16,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include "iceoryx_posh/internal/runtime/ipc_runtime_interface.hpp"
-#include "iceoryx_dust/cxx/convert.hpp"
 #include "iceoryx_hoofs/posix_wrapper/posix_access_rights.hpp"
 #include "iceoryx_posh/error_handling/error_handling.hpp"
 #include "iceoryx_posh/version/version_info.hpp"
+#include "iox/detail/convert.hpp"
 #include "iox/into.hpp"
 #include "iox/std_string_support.hpp"
 
@@ -90,9 +90,9 @@ IpcRuntimeInterface::IpcRuntimeInterface(const RuntimeName_t& roudiName,
             IpcMessage sendBuffer;
             int pid = getpid();
             cxx::Expects(pid >= 0);
-            sendBuffer << IpcMessageTypeToString(IpcMessageType::REG) << m_runtimeName << cxx::convert::toString(pid)
-                       << cxx::convert::toString(posix::PosixUser::getUserOfCurrentProcess().getID())
-                       << cxx::convert::toString(transmissionTimestamp)
+            sendBuffer << IpcMessageTypeToString(IpcMessageType::REG) << m_runtimeName << convert::toString(pid)
+                       << convert::toString(posix::PosixUser::getUserOfCurrentProcess().getID())
+                       << convert::toString(transmissionTimestamp)
                        << static_cast<cxx::Serialization>(version::VersionInfo::getCurrentVersion()).toString();
 
             bool successfullySent = m_RoudiIpcInterface.timedSend(sendBuffer, 100_ms);
@@ -242,15 +242,15 @@ IpcRuntimeInterface::RegAckResult IpcRuntimeInterface::waitForRegAck(int64_t tra
                 }
 
                 // read out the shared memory base address and save it
-                iox::cxx::convert::fromString(receiveBuffer.getElementAtIndex(1U).c_str(), m_shmTopicSize);
+                iox::convert::fromString(receiveBuffer.getElementAtIndex(1U).c_str(), m_shmTopicSize);
                 UntypedRelativePointer::offset_t offset{0U};
-                iox::cxx::convert::fromString(receiveBuffer.getElementAtIndex(2U).c_str(), offset);
+                iox::convert::fromString(receiveBuffer.getElementAtIndex(2U).c_str(), offset);
                 m_segmentManagerAddressOffset.emplace(offset);
 
                 int64_t receivedTimestamp{0U};
-                cxx::convert::fromString(receiveBuffer.getElementAtIndex(3U).c_str(), receivedTimestamp);
-                cxx::convert::fromString(receiveBuffer.getElementAtIndex(4U).c_str(), m_segmentId);
-                cxx::convert::fromString(receiveBuffer.getElementAtIndex(5U).c_str(), m_sendKeepalive);
+                convert::fromString(receiveBuffer.getElementAtIndex(3U).c_str(), receivedTimestamp);
+                convert::fromString(receiveBuffer.getElementAtIndex(4U).c_str(), m_segmentId);
+                convert::fromString(receiveBuffer.getElementAtIndex(5U).c_str(), m_sendKeepalive);
                 if (transmissionTimestamp == receivedTimestamp)
                 {
                     return RegAckResult::SUCCESS;
