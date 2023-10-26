@@ -106,8 +106,8 @@ PoshRuntimeImpl::getMiddlewarePublisher(const capro::ServiceDescription& service
 
     IpcMessage sendBuffer;
     sendBuffer << IpcMessageTypeToString(IpcMessageType::CREATE_PUBLISHER) << m_appName
-               << static_cast<cxx::Serialization>(service).toString() << publisherOptions.serialize().toString()
-               << static_cast<cxx::Serialization>(portConfigInfo).toString();
+               << static_cast<Serialization>(service).toString() << publisherOptions.serialize().toString()
+               << static_cast<Serialization>(portConfigInfo).toString();
 
     auto maybePublisher = requestPublisherFromRoudi(sendBuffer);
     if (maybePublisher.has_error())
@@ -235,8 +235,8 @@ PoshRuntimeImpl::getMiddlewareSubscriber(const capro::ServiceDescription& servic
 
     IpcMessage sendBuffer;
     sendBuffer << IpcMessageTypeToString(IpcMessageType::CREATE_SUBSCRIBER) << m_appName
-               << static_cast<cxx::Serialization>(service).toString() << options.serialize().toString()
-               << static_cast<cxx::Serialization>(portConfigInfo).toString();
+               << static_cast<Serialization>(service).toString() << options.serialize().toString()
+               << static_cast<Serialization>(portConfigInfo).toString();
 
     auto maybeSubscriber = requestSubscriberFromRoudi(sendBuffer);
 
@@ -333,8 +333,8 @@ popo::ClientPortUser::MemberType_t* PoshRuntimeImpl::getMiddlewareClient(const c
 
     IpcMessage sendBuffer;
     sendBuffer << IpcMessageTypeToString(IpcMessageType::CREATE_CLIENT) << m_appName
-               << static_cast<cxx::Serialization>(service).toString() << options.serialize().toString()
-               << static_cast<cxx::Serialization>(portConfigInfo).toString();
+               << static_cast<Serialization>(service).toString() << options.serialize().toString()
+               << static_cast<Serialization>(portConfigInfo).toString();
 
     auto maybeClient = requestClientFromRoudi(sendBuffer);
     if (maybeClient.has_error())
@@ -441,8 +441,8 @@ popo::ServerPortUser::MemberType_t* PoshRuntimeImpl::getMiddlewareServer(const c
 
     IpcMessage sendBuffer;
     sendBuffer << IpcMessageTypeToString(IpcMessageType::CREATE_SERVER) << m_appName
-               << static_cast<cxx::Serialization>(service).toString() << options.serialize().toString()
-               << static_cast<cxx::Serialization>(portConfigInfo).toString();
+               << static_cast<Serialization>(service).toString() << options.serialize().toString()
+               << static_cast<Serialization>(portConfigInfo).toString();
 
     auto maybeServer = requestServerFromRoudi(sendBuffer);
     if (maybeServer.has_error())
@@ -563,7 +563,7 @@ NodeData* PoshRuntimeImpl::createNode(const NodeProperty& nodeProperty) noexcept
 {
     IpcMessage sendBuffer;
     sendBuffer << IpcMessageTypeToString(IpcMessageType::CREATE_NODE) << m_appName
-               << static_cast<cxx::Serialization>(nodeProperty).toString();
+               << static_cast<Serialization>(nodeProperty).toString();
 
     IpcMessage receiveBuffer;
 

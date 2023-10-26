@@ -903,7 +903,7 @@ PortManager::acquirePublisherPortDataWithoutDiscovery(const capro::ServiceDescri
                 "Process '"
                     << runtimeName
                     << "' violates the communication policy by requesting a PublisherPort which is already used by '"
-                    << usedByProcess << "' with service '" << service.operator cxx::Serialization().toString() << "'.");
+                    << usedByProcess << "' with service '" << service.operator Serialization().toString() << "'.");
         }))
     {
         errorHandler(PoshError::POSH__PORT_MANAGER_PUBLISHERPORT_NOT_UNIQUE, ErrorLevel::MODERATE);
@@ -1035,7 +1035,7 @@ PortManager::acquireServerPortData(const capro::ServiceDescription& service,
                         << runtimeName
                         << "' violates the communication policy by requesting a ServerPort which is already used by '"
                         << serverPortData->m_runtimeName << "' with service '"
-                        << service.operator cxx::Serialization().toString() << "'.");
+                        << service.operator Serialization().toString() << "'.");
             errorHandler(PoshError::POSH__PORT_MANAGER_SERVERPORT_NOT_UNIQUE, ErrorLevel::MODERATE);
             return err(PortPoolError::UNIQUE_SERVER_PORT_ALREADY_EXISTS);
         }
